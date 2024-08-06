@@ -4,39 +4,31 @@
 
 #define MAX 100
 
-typedef struct {
-    char data[MAX];
-    int top;
-} Stack;
+int top = -1;
+char stack[MAX];
 
-void initStack(Stack *s) {
-    s->top = -1;
-}
-
-void push(Stack *s, char c) {
-    if (s->top < MAX - 1) {
-        s->data[++(s->top)] = c;
+void push(char c) {
+    if (top < MAX - 1) {
+        stack[++top] = c;
     }
 }
 
-char pop(Stack *s) {
-    if (s->top >= 0) {
-        return s->data[(s->top)--];
+char pop() {
+    if (top >= 0) {
+        return stack[top--];
     }
     return '\0';
 }
 
 bool isPalindrome(char str[]) {
     int len = strlen(str);
-    Stack s;
-    initStack(&s);
 
     for (int i = 0; i < len; i++) {
-        push(&s, str[i]);
+        push(str[i]);
     }
 
     for (int i = 0; i < len; i++) {
-        if (str[i] != pop(&s)) {
+        if (str[i] != pop()) {
             return false;
         }
     }
@@ -47,7 +39,8 @@ bool isPalindrome(char str[]) {
 int main() {
     char str[MAX];
     printf("Enter a string: ");
-    gets(str);
+    fgets(str, sizeof(str), stdin);
+    str[strcspn(str, "\n")] = '\0'; // Remove newline character
 
     if (isPalindrome(str)) {
         printf("The string is a palindrome.\n");
