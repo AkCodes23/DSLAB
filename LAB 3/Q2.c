@@ -2,47 +2,42 @@
 
 #define MAX 100
 
-typedef struct
+void initStack(int *top)
 {
-    int data[MAX];
-    int top;
-} Stack;
-
-void initStack(Stack *s)
-{
-    s->top = -1;
+    *top = -1;
 }
 
-void push(Stack *s, int value)
+void push(int *stack, int *top, int value)
 {
-    if (s->top < MAX - 1)
+    if (*top < MAX - 1)
     {
-        s->data[++(s->top)] = value;
+        stack[++(*top)] = value;
     }
 }
 
-int pop(Stack *s)
+int pop(int *stack, int *top)
 {
-    if (s->top >= 0)
+    if (*top >= 0)
     {
-        return s->data[(s->top)--];
+        return stack[(*top)--];
     }
     return -1;
 }
 
 void convertToBase(int number, int base)
 {
-    Stack s;
-    initStack(&s);
+    int stack[MAX];
+    int top;
+    initStack(&top);
     while (number > 0)
     {
-        push(&s, number % base);
+        push(stack, &top, number % base);
         number /= base;
     }
 
-    while (s.top >= 0)
+    while (top >= 0)
     {
-        int digit = pop(&s);
+        int digit = pop(stack, &top);
         if (digit < 10)
         {
             printf("%d", digit);
