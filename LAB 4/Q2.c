@@ -53,7 +53,7 @@ int main() {
         scanf("%d %d %d", &a[i].row, &a[i].col, &a[i].value);
     }
 
-    fastTranspose(a, b);
+    fast(a, b);
 
     printf("The transposed matrix is:\n");
     for (int i = 0; i <= b[0].value; i++) {
