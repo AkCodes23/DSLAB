@@ -17,8 +17,8 @@ int evaluatePostfix(char *postfix) {
     char *e = postfix;
     int n1, n2, num;
     while (*e != '\0') {
-        if (*e >= '0' && *e <= '9') {
-            num = *e - '0';  // Convert char to int
+        if (*e!='+'&&*e!='-'&&*e!='*'&&*e!='/'&&*e!='%') {
+            num = *e - '0';
             push(num);
         } else {
             n1 = pop();
