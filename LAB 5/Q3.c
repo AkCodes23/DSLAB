@@ -1,50 +1,63 @@
 #include <stdio.h>
-
 #define MAX 100
 
-char stack[MAX][MAX];
+char* stack[MAX];
 int top = -1;
 
-void push(char *str) {
-    int i = 0;
-    while (str[i] != '\0') {
-        stack[++top][i] = str[i];
-        i++;
+void push(char* value) {
+    stack[++top] = value;
+}
+char* pop() {
+    if (top == -1) {
+        return NULL;
     }
-    stack[top][i] = '\0';
+    return stack[top--];
+}
+int isOperator(char c) {
+    return (c == '+' || c == '-' || c == '*' || c == '/');
 }
 
-void pop(char *str) {
-    int i = 0;
-    while (stack[top][i] != '\0') {
-        str[i] = stack[top][i];
-        i++;
+char* postfixToInfix(char* postfix) {
+    char temp[MAX][MAX];
+    int len = 0;
+    
+    while (postfix[len] != '\0') {
+        len++;
     }
-    str[i] = '\0';
-    top--;
-}
+    for (int i = 0; i < len; i++) {
+        char c = postfix[i];
 
-void postfixToInfix(char *postfix) {
-    char *e = postfix, operand1[MAX], operand2[MAX], temp[MAX];
-    while (*e != '\0') {
-        if ((*e >= 'A' && *e <= 'Z') || (*e >= 'a' && *e <= 'z') || (*e >= '0' && *e <= '9')) {
-            char operand[2] = {*e, '\0'};
-            push(operand);
-        } else {
-            pop(operand2);
-            pop(operand1);
-            sprintf(temp, "(%s%c%s)", operand1, *e, operand2);
-            push(temp);
+        if (c >= '0' && c <= '9') {
+            temp[i][0] = c;
+            temp[i][1] = '\0';
+            push(temp[i]);
+        } else if (isOperator(c)) {
+            char* operand2 = pop();
+            char* operand1 = pop();
+            int j = 0;
+            temp[i][j++] = '(';
+            for (int k = 0; operand1[k] != '\0'; k++, j++) {
+                temp[i][j] = operand1[k];
+            }
+            temp[i][j++] = c;
+            for (int k = 0; operand2[k] != '\0'; k++, j++) {
+                temp[i][j] = operand2[k];
+            }
+            temp[i][j++] = ')';
+            temp[i][j] = '\0';
+            push(temp[i]);
         }
-        e++;
     }
-    printf("Fully parenthesized infix expression: %s\n", stack[top]);
+
+    return pop();
 }
 
 int main() {
-    char exp[MAX];
-    printf("Enter postfix expression: ");
-    scanf("%s", exp);
-    postfixToInfix(exp);
+    char postfix[MAX];
+    printf("Enter a postfix expression: ");
+    scanf("%s", postfix);
+
+    char* infix = postfixToInfix(postfix);
+    printf("Infix expression: %s\n", infix);
     return 0;
 }
