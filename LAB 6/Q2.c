@@ -7,7 +7,6 @@ int top = -1;
 void push(int x) {
     stack[++top] = x;
 }
-
 int pop() {
     return stack[top--];
 }
@@ -31,7 +30,6 @@ int evaluatePrefix(char* exp) {
     }
     return pop();
 }
-
 int main() {
     char exp[MAX];
     printf("Enter prefix expression: ");
