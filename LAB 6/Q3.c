@@ -1,54 +1,40 @@
 #include <stdio.h>
 #include <string.h>
-#define MAX 100
 
-char stack[MAX][MAX];
-int top = -1;
-
-void push(char* str) {
-    top++;
-    int i = 0;
-    while (str[i] != '\0') {
-        stack[top][i] = str[i];
-        i++;
-    }
-    stack[top][i] = '\0';
+int isOperator(char c) {
+    return (c == '+' || c == '-' || c == '*' || c == '/');
 }
 
-char* pop() {
-    return stack[top--];
-}
+void preToInfix(char* prefix, char infix[][100]) {
+    int length = strlen(prefix);
+    int top = -1;
 
-void prefixToInfix(char* exp) {
-    int n = 0;
-    while (exp[n] != '\0') n++;
-    for (int i = n - 1; i >= 0; i--) {
-        if (exp[i] >= 'a' && exp[i] <= 'z') {
-            char op[2] = {exp[i], '\0'};
-            push(op);
+    for (int i = length - 1; i >= 0; i--) {
+        if (isOperator(prefix[i])) {
+            char op1[100], op2[100];
+            strcpy(op1, infix[top--]);
+            strcpy(op2, infix[top--]);
+
+            char temp[100];
+            sprintf(temp, "(%s%c%s)", op1, prefix[i], op2);
+
+            strcpy(infix[++top], temp);
         } else {
-            char* o1 = pop();
-            char* o2 = pop();
-            char temp[MAX];
-            int j = 0;
-            temp[j++] = '(';
-            int k = 0;
-            while (o1[k] != '\0') temp[j++] = o1[k++];
-            temp[j++] = exp[i];
-            k = 0;
-            while (o2[k] != '\0') temp[j++] = o2[k++];
-            temp[j++] = ')';
-            temp[j] = '\0';
-            push(temp);
+            char operand[2] = {prefix[i], '\0'};
+            strcpy(infix[++top], operand);
         }
     }
-    printf("Infix Expression: %s\n", pop());
 }
 
 int main() {
-    char exp[MAX];
-    printf("Enter prefix expression: ");
-    scanf("%s", exp);
-    prefixToInfix(exp);
+    char prefix[30];
+    char infix[30][30];
+
+    printf("Enter a prefix expression: ");
+    scanf("%s", prefix);
+
+    preToInfix(prefix, infix);
+    printf("Infix : %s\n", infix[0]);
+
     return 0;
 }
