@@ -4,11 +4,9 @@
 int isOperator(char c) {
     return (c == '+' || c == '-' || c == '*' || c == '/');
 }
-
 void preToInfix(char* prefix, char infix[][100]) {
     int length = strlen(prefix);
     int top = -1;
-
     for (int i = length - 1; i >= 0; i--) {
         if (isOperator(prefix[i])) {
             char op1[100], op2[100];
