@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <string.h>
-
 int isOperator(char c) {
     return (c == '+' || c == '-' || c == '*' || c == '/');
 }
@@ -23,7 +22,6 @@ void preToInfix(char* prefix, char infix[][100]) {
         }
     }
 }
-
 int main() {
     char prefix[30];
     char infix[30][30];
