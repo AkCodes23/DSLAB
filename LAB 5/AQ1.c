@@ -6,8 +6,7 @@ int stack1[MAX], stack2[MAX];
 int top1 = -1, top2 = -1;
 
 void push1(int x) {
-    stack1[++top1] = x;
-}
+    stack1[++top1] = x;}
 
 int pop1() {
     return stack1[top1--];
