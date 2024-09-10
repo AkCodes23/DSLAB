@@ -1,4 +1,5 @@
 #include <stdio.h>
+
 #define MAX 100
 
 char* stack[MAX];
@@ -7,12 +8,14 @@ int top = -1;
 void push(char* value) {
     stack[++top] = value;
 }
+
 char* pop() {
     if (top == -1) {
         return NULL;
     }
     return stack[top--];
 }
+
 int isOperator(char c) {
     return (c == '+' || c == '-' || c == '*' || c == '/');
 }
@@ -20,13 +23,12 @@ int isOperator(char c) {
 char* postfixToInfix(char* postfix) {
     char temp[MAX][MAX];
     int len = 0;
-    
+
     while (postfix[len] != '\0') {
         len++;
     }
     for (int i = 0; i < len; i++) {
         char c = postfix[i];
-
         if (c >= '0' && c <= '9') {
             temp[i][0] = c;
             temp[i][1] = '\0';
@@ -48,7 +50,6 @@ char* postfixToInfix(char* postfix) {
             push(temp[i]);
         }
     }
-
     return pop();
 }
 
