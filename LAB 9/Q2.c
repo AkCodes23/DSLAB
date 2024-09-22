@@ -4,7 +4,7 @@
 struct Node {
     int coeff;
     int pow;
-    struct Node* next;
+    struct Node* link;
 };
 
 void create_node(int coeff, int pow, struct Node** temp) {
@@ -15,61 +15,61 @@ void create_node(int coeff, int pow, struct Node** temp) {
         r->coeff = coeff;
         r->pow = pow;
         *temp = r;
-        r->next = (struct Node*)malloc(sizeof(struct Node));
-        r = r->next;
-        r->next = NULL;
+        r->link = (struct Node*)malloc(sizeof(struct Node));
+        r = r->link;
+        r->link = NULL;
     } else {
         r->coeff = coeff;
         r->pow = pow;
-        r->next = (struct Node*)malloc(sizeof(struct Node));
-        r = r->next;
-        r->next = NULL;
+        r->link = (struct Node*)malloc(sizeof(struct Node));
+        r = r->link;
+        r->link = NULL;
     }
 }
 
 void polyadd(struct Node* poly1, struct Node* poly2, struct Node* poly) {
-    while (poly1->next && poly2->next) {
+    while (poly1->link && poly2->link) {
         if (poly1->pow > poly2->pow) {
             poly->pow = poly1->pow;
             poly->coeff = poly1->coeff;
-            poly1 = poly1->next;
+            poly1 = poly1->link;
         } else if (poly1->pow < poly2->pow) {
             poly->pow = poly2->pow;
             poly->coeff = poly2->coeff;
-            poly2 = poly2->next;
+            poly2 = poly2->link;
         } else {
             poly->pow = poly1->pow;
             poly->coeff = poly1->coeff + poly2->coeff;
-            poly1 = poly1->next;
-            poly2 = poly2->next;
+            poly1 = poly1->link;
+            poly2 = poly2->link;
         }
-        poly->next = (struct Node*)malloc(sizeof(struct Node));
-        poly = poly->next;
-        poly->next = NULL;
+        poly->link = (struct Node*)malloc(sizeof(struct Node));
+        poly = poly->link;
+        poly->link = NULL;
     }
-    while (poly1->next || poly2->next) {
-        if (poly1->next) {
+    while (poly1->link || poly2->link) {
+        if (poly1->link) {
             poly->pow = poly1->pow;
             poly->coeff = poly1->coeff;
-            poly1 = poly1->next;
+            poly1 = poly1->link;
         }
-        if (poly2->next) {
+        if (poly2->link) {
             poly->pow = poly2->pow;
             poly->coeff = poly2->coeff;
-            poly2 = poly2->next;
+            poly2 = poly2->link;
         }
-        poly->next = (struct Node*)malloc(sizeof(struct Node));
-        poly = poly->next;
-        poly->next = NULL;
+        poly->link = (struct Node*)malloc(sizeof(struct Node));
+        poly = poly->link;
+        poly->link = NULL;
     }
 }
 
 void show(struct Node* node) {
-    while (node->next != NULL) {
+    while (node->link != NULL) {
         printf("%dx^%d", node->coeff, node->pow);
-        node = node->next;
+        node = node->link;
         if (node->coeff >= 0) {
-            if (node->next != NULL)
+            if (node->link != NULL)
                 printf("+");
         }
     }
